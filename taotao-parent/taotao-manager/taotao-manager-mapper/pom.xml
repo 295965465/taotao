@@ -47,4 +47,18 @@
             <artifactId>druid</artifactId>
         </dependency>
     </dependencies>
+    <build>
+        <!-- maven 插件打包的时候需要加入,因为maven不会自动将.xml,.properties打包-->
+        <resources>
+            <resource>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>**/*.properties</include>
+                    <include>**/*.xml</include>
+                </includes>
+                <filtering>false</filtering>
+            </resource>
+        </resources>
+
+    </build>
 </project>
