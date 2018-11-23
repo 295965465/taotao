@@ -27,5 +27,6 @@
 	<!--<dubbo:consumer check="false" />-->
 	<dubbo:registry protocol="zookeeper" address="192.168.160.128:2181"/>
 	<dubbo:reference interface="com.taotao.service.TestService" id="testService" timeout="300000"/>
+    <dubbo:reference interface="com.taotao.service.ItemService" id="itemService" timeout="300000"/>
 
 </beans>

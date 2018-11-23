@@ -12,13 +12,14 @@
     <artifactId>taotao-manager</artifactId>
     <packaging>pom</packaging>
 
-    <name>Maven Portlet Archetype</name>
+    <name>taotao-manager</name>
     <!-- FIXME change it to the project's website -->
     <url>http://www.example.com</url>
     <modules>
         <module>taotao-manager-pojo</module>
         <module>taotao-manager-mapper</module>
         <module>taotao-manager-service</module>
+        <module>taotao-manager-interface</module>
     </modules>
 
     <dependencies>
