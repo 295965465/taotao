@@ -10,11 +10,14 @@
 </div>
 <script type="text/javascript">
 $(function(){
+    //在contentCategory中创建一个树
 	$("#contentCategory").tree({
 		url : '/content/category/list',
 		animate: true,
 		method : "GET",
+        //右击鼠标事件
 		onContextMenu: function(e,node){
+		    //关闭鼠标默认的事件
             e.preventDefault();
             $(this).tree('select',node.target);
             $('#contentCategoryMenu').menu('show',{
