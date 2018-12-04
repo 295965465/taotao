@@ -41,12 +41,14 @@ $(function(){
 var contentListToolbar = [{
     text:'新增',
     iconCls:'icon-add',
+	//处理点击事件时触发
     handler:function(){
     	var node = $("#contentCategoryTree").tree("getSelected");
     	if(!node || !$("#contentCategoryTree").tree("isLeaf",node.target)){
     		$.messager.alert('提示','新增内容必须选择一个内容分类!');
     		return ;
     	}
+    	//创建一个窗口，通过url来映射，获取jsp页面，展示在窗口中
     	TT.createWindow({
 			url : "/content-add"
 		}); 

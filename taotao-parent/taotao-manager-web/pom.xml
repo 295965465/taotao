@@ -107,6 +107,11 @@
             <artifactId>taotao-content-interface</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+        <!--fastdfs的jar包-->
+        <dependency>
+            <groupId>fastdfs_client</groupId>
+            <artifactId>fastdfs_client</artifactId>
+        </dependency>
 
     </dependencies>
     <build>

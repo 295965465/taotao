@@ -53,8 +53,10 @@
 <script type="text/javascript">
 	var contentAddEditor ;
 	$(function(){
+	    //初始化一个富文本编辑器，放到此处
 		contentAddEditor = TT.createEditor("#contentAddForm [name=content]");
 		TT.initOnePicUpload();
+		//这内容分类的ID设置到隐藏域中去
 		$("#contentAddForm [name=categoryId]").val($("#contentCategoryTree").tree("getSelected").id);
 	});
 	
@@ -64,8 +66,9 @@
 					$.messager.alert('提示','表单还未填写完成!');
 					return ;
 				}
+				//同步富文本编辑器的内容到 textArea中去
 				contentAddEditor.sync();
-				
+				//表单序列化为url
 				$.post("/content/save",$("#contentAddForm").serialize(), function(data){
 					if(data.status == 200){
 						$.messager.alert('提示','新增内容成功!');
