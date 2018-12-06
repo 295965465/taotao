@@ -18,12 +18,23 @@ public class ContentCategroyController {
     private ContentCategoryService service;
 
 
-
+    /**
+     * 查询
+     * @param parentId
+     * @return
+     */
     @RequestMapping(value="/content/category/list",method = RequestMethod.GET)
     @ResponseBody
     public List<EasyUITreeNode> getContentCategroyList(@RequestParam(value="id",defaultValue = "0") Long parentId){
         return  service.getContentCategoryList(parentId);
     }
+
+    /**
+     * 新建
+     * @param parentId
+     * @param name
+     * @return
+     */
     @RequestMapping(value = "/content/category/create",method =RequestMethod.POST)
     @ResponseBody
     public TaotaoResult creatContentCategroy(Long parentId,String name){
@@ -31,11 +42,22 @@ public class ContentCategroyController {
 
     }
 
+    /**
+     * 删除
+     * @param id
+     * @return
+     */
     @RequestMapping(value = "/content/category/delete/",method = RequestMethod.POST)
     @ResponseBody
     public TaotaoResult deleteContentCategory(Long id){
         return service.deleteContentCategory(id);
     }
+
+    /**
+     * 更新
+     * @param id
+     * @param name
+     */
     @RequestMapping(value = "/content/category/update",method = RequestMethod.POST)
     @ResponseBody
     public void updateContentCategory(Long id,String name){

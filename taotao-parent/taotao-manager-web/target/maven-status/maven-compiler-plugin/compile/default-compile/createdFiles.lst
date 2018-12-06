@@ -2,4 +2,5 @@ com\taotao\controller\PageController.class
 com\taotao\controller\ContentCategroyController.class
 com\taotao\controller\ItemController.class
 com\taotao\controller\ContentController.class
+com\taotao\controller\ItemCatController.class
 com\taotao\controller\TestController.class
