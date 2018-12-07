@@ -1,7 +1,12 @@
 package com.taotao.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
+import com.taotao.common.pojo.TaotaoResult;
+import com.taotao.common.util.IDUtils;
+import com.taotao.mapper.TbItemDescMapper;
+import com.taotao.pojo.TbItemDesc;
 import com.taotao.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +22,8 @@ import com.taotao.pojo.TbItemExample;
 public class ItemServiceImpl implements ItemService {
 @Autowired
 private TbItemMapper mapper;
+@Autowired
+private TbItemDescMapper itemDescMapper;
 	@Override
 	public EasyUIDataGridResult getItemList(Integer page, Integer rows) {
 		//1.设置分页的信息 使用pagehelper
@@ -36,6 +43,25 @@ private TbItemMapper mapper;
 		result.setRows(info.getList());
 		//7.返回
 		return result;
+	}
+
+	@Override
+	public TaotaoResult saveItem(TbItem item, String desc) {
+        //补全TbItem中的信息
+		Long itemId= IDUtils.genItemId();
+		item.setId(itemId);
+		item.setCreated(new Date());
+		//1-正常，2-下架，3-删除',
+		item.setStatus((byte) 1);
+		item.setUpdated(item.getCreated());
+		mapper.insertSelective(item);
+		//3.补全商品描述中的属性
+		TbItemDesc itemDesc=new TbItemDesc();
+		itemDesc.setCreated(new Date());
+		itemDesc.setItemId(itemId);
+		itemDesc.setItemDesc(desc);
+		itemDesc.setUpdated(itemDesc.getCreated());
+		return TaotaoResult.ok();
 	}
 
 }

@@ -56,4 +56,24 @@ public class ContenServiceImpl implements ContentService {
        }
         return TaotaoResult.ok();
     }
+
+    @Override
+    public TaotaoResult deleteContent(Long params) {
+        int rows=tbContentMapper.deleteByPrimaryKey(params);
+        if (rows==0){
+            return TaotaoResult.build(400,"删除失败");
+        }
+        return TaotaoResult.ok();
+    }
+
+    @Override
+    public TaotaoResult editContent(TbContent tbContent) {
+        tbContent.setUpdated(new Date());
+        int rows=tbContentMapper.updateByPrimaryKey(tbContent);
+
+        if (rows==0){
+            return TaotaoResult.build(400,"数据更新失败");
+        }
+        return TaotaoResult.ok();
+    }
 }

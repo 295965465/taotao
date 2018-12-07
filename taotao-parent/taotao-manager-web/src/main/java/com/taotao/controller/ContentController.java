@@ -28,4 +28,18 @@ public class ContentController {
 
         return contentService.saveContent(tbContent);
     }
+
+    @RequestMapping(value = "/rest/content/edit",method = RequestMethod.POST)
+    @ResponseBody
+    public TaotaoResult editContent(TbContent tbContent){
+
+        return contentService.editContent(tbContent);
+    }
+
+    @RequestMapping(value = "/content/delete",method = RequestMethod.POST)
+    @ResponseBody
+    public TaotaoResult deleteContent(Long ids){
+
+        return contentService.deleteContent(ids);
+    }
 }

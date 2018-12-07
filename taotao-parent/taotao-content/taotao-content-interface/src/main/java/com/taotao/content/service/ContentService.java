@@ -13,4 +13,8 @@ public interface ContentService {
     public EasyUIDataGridResult queryContentList(Long categoryId,Integer page,Integer rows);
 
     TaotaoResult saveContent(TbContent tbContent);
+
+    TaotaoResult deleteContent(Long params);
+
+    TaotaoResult editContent(TbContent tbContent);
 }

@@ -8,7 +8,8 @@
         http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd
         http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd">
-
+	<!--加载配置文件 方便用@value(${key})注入-->
+	<context:property-placeholder location="classpath:resource/*.properties"/>
 	<context:component-scan base-package="com.taotao.controller" />
 	<mvc:annotation-driven />
 	<bean
