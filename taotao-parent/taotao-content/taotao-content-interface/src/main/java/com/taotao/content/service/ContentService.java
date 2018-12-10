@@ -4,6 +4,8 @@ import com.taotao.common.pojo.EasyUIDataGridResult;
 import com.taotao.common.pojo.TaotaoResult;
 import com.taotao.pojo.TbContent;
 
+import java.util.List;
+
 /**
  * @Auther: DELL
  * @Date: 2018/11/30 16:33
@@ -17,4 +19,5 @@ public interface ContentService {
     TaotaoResult deleteContent(Long params);
 
     TaotaoResult editContent(TbContent tbContent);
+    List<TbContent> getConterById(Long categoryId);
 }

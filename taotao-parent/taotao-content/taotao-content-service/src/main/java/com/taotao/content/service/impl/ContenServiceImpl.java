@@ -76,4 +76,13 @@ public class ContenServiceImpl implements ContentService {
         }
         return TaotaoResult.ok();
     }
+
+    @Override
+    public List<TbContent> getConterById(Long categoryId) {
+        TbContentExample example=new TbContentExample();
+        TbContentExample.Criteria criteria=example.createCriteria();
+        criteria.andCategoryIdEqualTo(categoryId);
+        List<TbContent> list=tbContentMapper.selectByExample(example);
+        return list;
+    }
 }

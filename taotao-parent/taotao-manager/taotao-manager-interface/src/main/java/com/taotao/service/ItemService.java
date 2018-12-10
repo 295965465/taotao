@@ -29,4 +29,17 @@ public interface ItemService {
 	 * @return
 	 */
 	public TaotaoResult saveItem(TbItem item, String desc);
+
+	/**
+	 * 根据Id删除Item
+	 * @param ids
+	 * @return
+	 */
+	TaotaoResult deleteItem(Long ids);
+
+	TaotaoResult updateItem(TbItem item, String desc);
+
+	TaotaoResult reshelfItem(Long ids);
+
+	TaotaoResult instockItem(Long ids);
 }

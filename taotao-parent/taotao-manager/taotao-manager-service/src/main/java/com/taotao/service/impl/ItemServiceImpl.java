@@ -64,4 +64,54 @@ private TbItemDescMapper itemDescMapper;
 		return TaotaoResult.ok();
 	}
 
+	@Override
+	public TaotaoResult deleteItem(Long ids) {
+		int rows=mapper.deleteByPrimaryKey(ids);
+		if (rows>0){
+			return  TaotaoResult.ok();
+		}{
+			return  TaotaoResult.build(400,"删除失败");
+		}
+
+
+	}
+
+	@Override
+	public TaotaoResult updateItem(TbItem item, String desc) {
+		//1.更改item中的update时间
+		item.setUpdated(new Date());
+		int rows=mapper.updateByPrimaryKeySelective(item);
+		//3.补全商品描述中的属性
+		TbItemDesc itemDesc=new TbItemDesc();
+		itemDesc.setUpdated(new Date());
+		itemDesc.setItemDesc(desc);
+		itemDesc.setItemId(item.getId());
+		int rows1=itemDescMapper.updateByPrimaryKeySelective(itemDesc);
+		if (rows>0&&rows1>0){
+			return  TaotaoResult.ok();
+		}{
+			return  TaotaoResult.build(400,"删除失败");
+		}
+	}
+
+	@Override
+	public TaotaoResult reshelfItem(Long ids) {
+		TbItem tbItem=new TbItem();
+		tbItem.setId(ids);
+		tbItem.setStatus((byte)1);
+		tbItem.setUpdated(new Date());
+		mapper.updateByPrimaryKeySelective(tbItem);
+		return TaotaoResult.ok();
+	}
+
+	@Override
+	public TaotaoResult instockItem(Long ids) {
+		TbItem tbItem=new TbItem();
+		tbItem.setId(ids);
+		tbItem.setStatus((byte)2);
+		tbItem.setUpdated(new Date());
+		mapper.updateByPrimaryKeySelective(tbItem);
+		return TaotaoResult.ok();
+	}
+
 }

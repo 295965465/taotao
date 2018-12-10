@@ -10,6 +10,7 @@
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd">
 
 	<context:component-scan base-package="com.taotao.portal.controller" />
+	<context:property-placeholder location="classpath:resource/*.properties"/>
 	<mvc:annotation-driven />
 	<bean
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -22,7 +23,7 @@
 	<dubbo:application name="taotao-portal-web"/>
 	<!--<dubbo:consumer check="false" />-->
 	<dubbo:registry protocol="zookeeper" address="192.168.160.128:2181"/>
-	<!--<dubbo:reference interface="com.taotao.service.TestService" id="testService" timeout="300000"/>
-    <dubbo:reference interface="com.taotao.service.ItemService" id="itemService" timeout="300000"/>-->
+	<dubbo:reference interface="com.taotao.content.service.ContentService" id="contentService" timeout="300000"/>
+	<!--<dubbo:reference interface="com.taotao.service.ItemService" id="itemService" timeout="300000"/>-->
 
 </beans>
