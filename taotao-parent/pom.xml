@@ -10,6 +10,8 @@
     <modules>
         <module>taotao-portal-web</module>
         <module>taotao-content</module>
+      <module>taotao-search-web</module>
+      <module>taotao-search</module>
     </modules>
     <packaging>pom</packaging>
   <name>taotao-parent</name>
