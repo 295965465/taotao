@@ -61,6 +61,7 @@ private TbItemDescMapper itemDescMapper;
 		itemDesc.setItemId(itemId);
 		itemDesc.setItemDesc(desc);
 		itemDesc.setUpdated(itemDesc.getCreated());
+		itemDescMapper.insert(itemDesc);
 		return TaotaoResult.ok();
 	}
 

@@ -38,7 +38,8 @@ public class SearchServiceImpl implements SearchService {
 			//3.2 创建solrinputdocument  将 列表中的元素一个个放到索引库中
 		for (SearchItem searchItem : searchItemList) {
 			SolrInputDocument document = new SolrInputDocument();
-			document.addField("id", searchItem.getId().toString());//这里是字符串需要转换
+			//这里是字符串需要转换
+			document.addField("id", searchItem.getId().toString());
 			document.addField("item_title", searchItem.getTitle());
 			document.addField("item_sell_point", searchItem.getSell_point());
 			document.addField("item_price", searchItem.getPrice());
@@ -69,15 +70,17 @@ public class SearchServiceImpl implements SearchService {
 		if(rows==null){
 			rows=60;
 		}
-		query.setStart((page-1)*rows);//page-1 * rows
+		//page-1 * rows
 		query.setRows(rows);
+		query.setStart((page-1)*rows);
 		//2.2.设置默认的搜索域
 		query.set("df", "item_keywords");
 		//2.3设置高亮
 		query.setHighlight(true);
 		query.setHighlightSimplePre("<em style=\"color:red\">");
 		query.setHighlightSimplePost("</em>");
-		query.addHighlightField("item_title");//设置高亮显示的域
+		//设置高亮显示的域
+		query.addHighlightField("item_title");
 		
 		//3.调用dao的方法 返回的是SearchResult 只包含了总记录数和商品的列表
 		SearchResult search = searchdao.search(query);
