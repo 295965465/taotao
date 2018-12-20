@@ -11,13 +11,13 @@
      <!-- 测试的时候可以用这个去加载实例化bean <context:annotation-config></context:annotation-config>  -->
 
 	<!-- 配置单机版的 -->
-	<bean class="redis.clients.jedis.JedisPool">
+	<!--<bean class="redis.clients.jedis.JedisPool">
 		<constructor-arg name="host" value="192.168.160.128"></constructor-arg>
 		<constructor-arg name="port" value="6379"></constructor-arg>
 	</bean>
-	<bean class="com.taotao.content.redis.JedisClientPool"></bean>
+	<bean class="com.taotao.content.redis.JedisClientPool"></bean>-->
 	<!-- 配置集群版 -->
-	<!-- <bean class="redis.clients.jedis.JedisCluster">
+	 <bean class="redis.clients.jedis.JedisCluster">
 		<constructor-arg name="nodes">
 			<set>
 				<bean class="redis.clients.jedis.HostAndPort">
@@ -47,6 +47,6 @@
 			</set>
 		</constructor-arg>
 	</bean>
-	<bean class="com.taotao.content.redis.JedisClientCluster"></bean> -->
+	<bean class="com.taotao.content.redis.JedisClientCluster"></bean>
 	
 </beans>
