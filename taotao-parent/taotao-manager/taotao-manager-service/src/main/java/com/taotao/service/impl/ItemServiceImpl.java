@@ -9,6 +9,8 @@ import com.taotao.mapper.TbItemDescMapper;
 import com.taotao.pojo.TbItemDesc;
 import com.taotao.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jms.core.JmsTemplate;
+import org.springframework.jms.core.MessageCreator;
 import org.springframework.stereotype.Service;
 
 import com.github.pagehelper.PageHelper;
@@ -18,12 +20,22 @@ import com.taotao.mapper.TbItemMapper;
 import com.taotao.pojo.TbItem;
 import com.taotao.pojo.TbItemExample;
 
+import javax.annotation.Resource;
+import javax.jms.Destination;
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.Session;
+
 @Service
 public class ItemServiceImpl implements ItemService {
 @Autowired
 private TbItemMapper mapper;
 @Autowired
 private TbItemDescMapper itemDescMapper;
+@Autowired
+private JmsTemplate  jmsTemplate;
+@Resource(name = "topicDestination")
+private Destination  destination;
 	@Override
 	public EasyUIDataGridResult getItemList(Integer page, Integer rows) {
 		//1.设置分页的信息 使用pagehelper
@@ -46,9 +58,9 @@ private TbItemDescMapper itemDescMapper;
 	}
 
 	@Override
-	public TaotaoResult saveItem(TbItem item, String desc) {
+	public TaotaoResult saveItem(final TbItem item, String desc) {
         //补全TbItem中的信息
-		Long itemId= IDUtils.genItemId();
+		final Long itemId= IDUtils.genItemId();
 		item.setId(itemId);
 		item.setCreated(new Date());
 		//1-正常，2-下架，3-删除',
@@ -62,6 +74,13 @@ private TbItemDescMapper itemDescMapper;
 		itemDesc.setItemDesc(desc);
 		itemDesc.setUpdated(itemDesc.getCreated());
 		itemDescMapper.insert(itemDesc);
+		//添加发送消息的逻辑
+		jmsTemplate.send(destination, new MessageCreator() {
+			@Override
+			public Message createMessage(Session session) throws JMSException {
+				return session.createTextMessage(itemId.toString());
+			}
+		});
 		return TaotaoResult.ok();
 	}
 
