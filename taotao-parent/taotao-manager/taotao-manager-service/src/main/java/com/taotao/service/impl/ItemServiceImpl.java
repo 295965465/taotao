@@ -75,15 +75,18 @@ private Destination  destination;
 		itemDesc.setUpdated(itemDesc.getCreated());
 		itemDescMapper.insert(itemDesc);
 		//添加发送消息的逻辑
+		ItemServiceImpl a =new ItemServiceImpl();
+		a.sendMessage(itemId);
+		return TaotaoResult.ok();
+	}
+    public  void sendMessage(final Long itemId){
 		jmsTemplate.send(destination, new MessageCreator() {
 			@Override
 			public Message createMessage(Session session) throws JMSException {
 				return session.createTextMessage(itemId.toString());
 			}
 		});
-		return TaotaoResult.ok();
 	}
-
 	@Override
 	public TaotaoResult deleteItem(Long ids) {
 		int rows=mapper.deleteByPrimaryKey(ids);
@@ -132,6 +135,22 @@ private Destination  destination;
 		tbItem.setUpdated(new Date());
 		mapper.updateByPrimaryKeySelective(tbItem);
 		return TaotaoResult.ok();
+	}
+
+	@Override
+	public TbItem getItemById(Long itemId) {
+
+		TbItem tbItem = mapper.selectByPrimaryKey(itemId);
+
+
+		return tbItem;
+	}
+
+	@Override
+	public TbItemDesc getItemDescById(Long itemId) {
+
+
+		return itemDescMapper.selectByPrimaryKey(itemId);
 	}
 
 }
