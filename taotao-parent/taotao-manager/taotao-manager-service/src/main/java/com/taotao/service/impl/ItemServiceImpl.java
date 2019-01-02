@@ -5,10 +5,15 @@ import java.util.List;
 
 import com.taotao.common.pojo.TaotaoResult;
 import com.taotao.common.util.IDUtils;
+import com.taotao.common.util.JsonUtils;
+import com.taotao.manager.redis.JedisClient;
 import com.taotao.mapper.TbItemDescMapper;
 import com.taotao.pojo.TbItemDesc;
 import com.taotao.service.ItemService;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
 import org.springframework.stereotype.Service;
@@ -34,13 +39,24 @@ private TbItemMapper mapper;
 private TbItemDescMapper itemDescMapper;
 @Autowired
 private JmsTemplate  jmsTemplate;
+@Autowired
+private JedisClient jedisClient;
 @Resource(name = "topicDestination")
 private Destination  destination;
+@Value("${ITEM_INFO_KEY}")
+private String ITEM_INFO_KEY;
+@Value("${Longtime}")
+private Integer Longtime;
+private Logger logger=Logger.getLogger(ItemServiceImpl.class);
 	@Override
 	public EasyUIDataGridResult getItemList(Integer page, Integer rows) {
 		//1.设置分页的信息 使用pagehelper
-		if(page==null)page=1;
-		if(rows==null)rows=30;
+		if(page==null) {
+			page=1;
+		}
+		if(rows==null) {
+			rows=30;
+		}
 		PageHelper.startPage(page, rows);
 		//2.注入mapper
 		//3.创建example 对象 不需要设置查询条件
@@ -139,18 +155,38 @@ private Destination  destination;
 
 	@Override
 	public TbItem getItemById(Long itemId) {
+        //1.添加缓存要先看缓存中有没有这个数据
+		String reidsKey=ITEM_INFO_KEY+":"+itemId+":BASE";
+		String jsonStr=jedisClient.get(reidsKey);
+		if (StringUtils.isNotBlank(jsonStr)){
+			logger.warn(reidsKey+"现在已经有缓存了");
+			jedisClient.expire(reidsKey,3600*24);
+			return JsonUtils.jsonToPojo(jsonStr,TbItem.class);
 
+		}
 		TbItem tbItem = mapper.selectByPrimaryKey(itemId);
-
-
+        //2.添加缓存
+		jedisClient.set(reidsKey, JsonUtils.objectToJson(tbItem));
+		jedisClient.expire(reidsKey,3600*24);
+		logger.warn(reidsKey+"现在还没有缓存");
 		return tbItem;
 	}
 
 	@Override
 	public TbItemDesc getItemDescById(Long itemId) {
+		String reidsKey=ITEM_INFO_KEY+":"+itemId+":DESC";
+		String jsonStr=jedisClient.get(reidsKey);
+		if (StringUtils.isNotBlank(jsonStr)){
+			logger.warn(reidsKey+"现在已经有缓存了");
+			jedisClient.expire(reidsKey,3600*24);
+			return JsonUtils.jsonToPojo(jsonStr,TbItemDesc.class);
 
-
-		return itemDescMapper.selectByPrimaryKey(itemId);
+		}
+		TbItemDesc tbItemDesc = itemDescMapper.selectByPrimaryKey(itemId);
+		jedisClient.set(reidsKey, JsonUtils.objectToJson(tbItemDesc));
+		jedisClient.expire(reidsKey,3600*24);
+		logger.warn(reidsKey+"Desc现在还没有缓存");
+		return tbItemDesc;
 	}
 
 }
